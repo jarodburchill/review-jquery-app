@@ -1,0 +1,240 @@
+<!--
+Mobile web development
+Assignment 2
+Created by: Jarod Burchill
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>JB Feedback A3</title>
+        <!--jQuery-->
+        <script src="js/lib/jquery-2.1.4.js"></script>
+        <!--jQuery Mobile-->
+        <script src="js/lib/jquery.mobile-1.4.5.js"></script>
+        <!--jQuery Validator-->
+        <script src="js/lib/jquery.validate.js"></script>
+        <!--jQuery Mobile stylesheet-->
+        <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.5.css">
+        <!--MyScripts-->
+        <script src="js/jbGlobal.js"></script>
+        <script src="js/jbUtil.js"></script>
+        <script src="js/jbDatabase.js"></script>
+        <script src="js/jbFeedbackDAL.js"></script>
+        <script src="js/jbFacade.js"></script>
+        <!--MyStyles-->
+        <link rel="stylesheet" type="text/css" href="css/jbMyStyle.css">
+    </head>
+    <body>
+        <!--Home page-->
+        <div id="jbHomePage" data-role="page">
+            <header data-role="header" data-theme="b" data-position="fixed">
+                <h1>JB Feedback A3</h1>
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="#jbHomePage" data-theme="a" data-icon="home" class="ui-btn-active ui-state-persist">Home</a></li>
+                        <li><a href="#jbAddFeedbackPage" data-theme="a" data-icon="plus">Add</a></li>
+                        <li><a href="#jbViewFeedbackPage" data-theme="a" data-icon="grid">Reviews</a></li>
+                        <li><a href="#jbSettingsPage" data-theme="a" data-icon="gear">Settings</a></li>
+                    </ul>
+                </div>
+            </header>
+            <section data-role="content">
+                <h3 align="center">Jarod Burchill's Feedback A3 App</h3>
+                <p>
+                    Welcome to Jarod Burchill's Feedback A3 App. A prototype designed for
+                    mobile applications programming class. This is the first iteration of the app
+                    designed to keep track of different places you have visited along with a review.
+                    <br>
+                </p>
+                <div align="center">
+                    <img src="jb-icon.png">
+                </div>
+                <p>Please feel free to contact me if you have any suggestions.</p>
+                <a href="tel:+15192828028" data-role="button" data-icon="plus" data-position="left">+1 (519)-282-8028</a>
+                <a href="mailto:jburchill3780@conestogac.on.ca" data-role="button" data-icon="plus" data-position="left">jburchill3780@conestogac.on.ca</a>
+                <p>Website:</p>
+                <a href="https://www.linkedin.com/in/jarodburchill/" data-role="button" data-icon="plus" data-position="left">LinkedIn</a>
+            </section>
+            <footer data-role="footer" data-theme="b" data-position="fixed">
+                <h1> 2019 &copy; Jarod Burchill </h1>
+            </footer>
+        </div>
+        <!--Add feedback page-->
+        <div id="jbAddFeedbackPage" data-role="page">
+            <header data-role="header" data-theme="b" data-position="fixed">
+                <h1>Add Feedback</h1>
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="#jbHomePage" data-theme="a" data-icon="home">Home</a></li>
+                        <li><a href="#jbAddFeedbackPage" data-theme="a" data-icon="plus" class="ui-btn-active ui-state-persist">Add</a></li>
+                        <li><a href="#jbViewFeedbackPage" data-theme="a" data-icon="grid">Reviews</a></li>
+                        <li><a href="#jbSettingsPage" data-theme="a" data-icon="gear">Settings</a></li>
+                    </ul>
+                </div>
+            </header>
+            <section data-role="content">
+                <form id="jbAddForm" name="jbAddForm">
+                    <label>Business Name:</label>
+                    <input type="text" id="jbBusinessName" name="jbBusinessName">
+
+                    <label>Type:</label>
+                    <select name="jbType" id="jbType">
+                       <!-- Dynamically created in jbFacade.js -->
+                    </select>
+
+                    <label>Reviewer Email:</label>
+                    <input type="text" id="jbReviewerEmail" name="jbReviewerEmail">
+
+                    <label>Reviewer Comments:</label>
+                    <textarea id="jbReviewerComments" name="jbReviewerComments"></textarea>
+
+                    <label>Review Date:</label>
+                    <input type="date" id="jbReviewDate" name="jbReviewDate">
+
+                    <label for="jbAddRatings">Do you want to add your ratings?</label>
+                    <input type="checkbox" id="jbAddRatings" name="jbAddRatings">
+
+                    <div id="jbRatings" hidden>
+                        <label>Food Quality (0-5):</label>
+                        <input type="number" id="jbFoodQuality" name="jbFoodQuality" value="0">
+
+                        <label>Services (0-5):</label>
+                        <input type="number" id="jbServices" name="jbServices" value="0">
+
+                        <label>Value (0-5):</label>
+                        <input type="number" id="jbValue" name="jbValue" value="0">
+
+                        <label>Overall Rating (Calculated):</label>
+                        <input type="text" id="jbOverallRating" name="jbOverallRating" value="0%" readonly>
+                    </div>
+
+                    <button type="button" id="jbSave" name="jbSave" data-theme="b"
+                            class="ui-btn ui-btn-inline ui-btn-active ui-state-persist">
+                        Save
+                    </button>
+
+                </form>
+            </section>
+            <footer data-role="footer" data-theme="b" data-position="fixed">
+                <h1> 2019 &copy; Jarod Burchill </h1>
+            </footer>
+        </div>
+        <!--View feedback page-->
+        <div id="jbViewFeedbackPage" data-role="page">
+            <header data-role="header" data-theme="b" data-position="fixed">
+                <h1>View Feedback</h1>
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="#jbHomePage" data-theme="a" data-icon="home">Home</a></li>
+                        <li><a href="#jbAddFeedbackPage" data-theme="a" data-icon="plus">Add</a></li>
+                        <li><a href="#jbViewFeedbackPage" data-theme="a" data-icon="grid" class="ui-btn-active ui-state-persist">Reviews</a></li>
+                        <li><a href="#jbSettingsPage" data-theme="a" data-icon="gear">Settings</a></li>
+                    </ul>
+                </div>
+            </header>
+            <section data-role="content">
+                <ul id="jbFeedbackList" data-role="listview">
+                    <!-- Dynamically created in jbFacade.js -->
+                </ul>
+            </section>
+            <footer data-role="footer" data-theme="b" data-position="fixed">
+                <h1> 2019 &copy; Jarod Burchill </h1>
+            </footer>
+        </div>
+        <!--Edit feedback page-->
+        <div id="jbEditFeedbackPage" data-role="page">
+            <header data-role="header" data-theme="b" data-position="fixed">
+                <h1>Modify Feedback</h1>
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="#jbHomePage" data-theme="a" data-icon="home">Home</a></li>
+                        <li><a href="#jbAddFeedbackPage" data-theme="a" data-icon="plus">Add</a></li>
+                        <li><a href="#jbViewFeedbackPage" data-theme="a" data-icon="grid" class="ui-btn-active ui-state-persist">Reviews</a></li>
+                        <li><a href="#jbSettingsPage" data-theme="a" data-icon="gear">Settings</a></li>
+                    </ul>
+                </div>
+            </header>
+            <section data-role="content">
+                <form id="jbEditForm" name="jbEditForm">
+                    <label>Business Name:</label>
+                    <input type="text" id="jbEditBusinessName" name="jbEditBusinessName">
+
+                    <label>Type:</label>
+                    <select id="jbEditType" name="jbEditType">
+                        <!-- Dynamically created in jbFacade.js -->
+                    </select>
+
+                    <label>Reviewer Email:</label>
+                    <input type="text" id="jbEditReviewerEmail" name="jbEditReviewerEmail">
+
+                    <label>Reviewer Comments:</label>
+                    <textarea id="jbEditReviewerComments" name="jbEditReviewerComments"></textarea>
+
+                    <label>Review Date:</label>
+                    <input type="date" id="jbEditReviewDate" name="jbEditReviewDate">
+
+                    <label for="jbEditAddRatings">Do you want to add your ratings?</label>
+                    <input type="checkbox" id="jbEditAddRatings" name="jbEditAddRatings">
+
+                    <div id="jbEditRatings" hidden>
+                        <label>Food Quality (0-5):</label>
+                        <input type="number" id="jbEditFoodQuality" name="jbEditFoodQuality">
+
+                        <label>Services (0-5):</label>
+                        <input type="number" id="jbEditServices" name="jbEditServices">
+
+                        <label>Value (0-5):</label>
+                        <input type="number" id="jbEditValue" name="jbEditValue">
+
+                        <label>Overall Rating (Calculated):</label>
+                        <input type="text" id="jbEditOverallRating" name="jbEditOverallRating" readonly>
+                    </div>
+
+                    <button type="button" id="jbCancel" name="jbCancel" style="background-color: yellow;"
+                            class="ui-btn ui-btn-inline">
+                        Cancel
+                    </button>
+                    <button type="button" id="jbDelete" name="jbDelete "
+                            class="ui-btn ui-btn-inline ui-btn-b">
+                        Delete
+                    </button>
+                    <button type="button" id="jbUpdate" name="jbUpdate" data-theme="b"
+                            class="ui-btn ui-btn-inline ui-btn-active ui-state-persist">
+                        Update
+                    </button>
+                </form>
+            </section>
+            <footer data-role="footer" data-theme="b" data-position="fixed">
+                <h1> 2019 &copy; Jarod Burchill </h1>
+            </footer>
+        </div>
+        <!--Settings page-->
+        <div id="jbSettingsPage" data-role="page">
+            <header data-role="header" data-theme="b" data-position="fixed">
+                <h1>Settings</h1>
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="#jbHomePage" data-theme="a" data-icon="home">Home</a></li>
+                        <li><a href="#jbAddFeedbackPage" data-theme="a" data-icon="plus">Add</a></li>
+                        <li><a href="#jbViewFeedbackPage" data-theme="a" data-icon="grid">Reviews</a></li>
+                        <li><a href="#jbSettingsPage" data-theme="a" data-icon="gear" class="ui-btn-active ui-state-persist">Settings</a></li>
+                    </ul>
+                </div>
+            </header>
+            <section data-role="content">
+                <form id="jbSettingsForm" name="jbSettingsForm">
+                    <label>Default Reviewer Email:</label>
+                    <input type="text" id="jbDefaultEmail" name="jbDefaultEmail">
+                    <button type="button" id="jbSaveDefault" name="jbSaveDefault" data-theme="b"
+                            class="ui-btn-active ui-state-persist">Save Defaults</button>
+                    <button type="button" id="jbClearDatabase" name="jbClearDatabase" data-theme="b">Clear Database</button>
+                </form>
+            </section>
+            <footer data-role="footer" data-theme="b" data-position="fixed">
+                <h1> 2019 &copy; Jarod Burchill </h1>
+            </footer>
+        </div>
+    </body>
+</html>
