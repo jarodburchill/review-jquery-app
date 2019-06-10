@@ -1,2 +1,2 @@
 # MobileWebPrototype
-https://jarodburchill.github.io/MobileWebPrototype/
+GitHub Pages: https://jarodburchill.github.io/MobileWebPrototype/
